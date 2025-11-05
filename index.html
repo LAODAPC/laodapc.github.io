@@ -1,103 +1,374 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-        <meta charset="UTF-8">
-        <title>学习HTML第二天！</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牢大说电脑 - 科技博主</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile {
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .name {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 导航栏 */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a2a6c;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #1a2a6c;
+        }
+        
+        /* 主要内容区域 */
+        main {
+            padding: 60px 0;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #1a2a6c;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #1a2a6c, #fdbb2d);
+        }
+        
+        /* 关于我部分 */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+        }
+        
+        /* 抖音链接样式 */
+        .douyin-link {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #FE2C55, #25F4EE);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(254, 44, 85, 0.3);
+        }
+        
+        .douyin-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(254, 44, 85, 0.4);
+        }
+        
+        .douyin-link i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* 博客文章部分 */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .blog-image {
+            height: 200px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .blog-content {
+            padding: 20px;
+        }
+        
+        .blog-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .blog-excerpt {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .read-more {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #1a2a6c;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>牢大说电脑</h1>
-<p>
-<h1>hello wlord!</h1>
-<p>
-<h2>hello wlord!</h2>
-<p>
-<h3>hello wlord!</h3>
-<p>
-<ul>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-             <li>无序列表</li>
-</ul>
-<p>
-<ol>
-<li>有序列表</li>
-<li>有序列表</li>
-<li>有序列表</li>
-<li>有序列表</li>
-<li>有序列表</li>
-<li>有序列表</li>
-<li>有序列表</li>
-</ol>
-<p>
-<dl>
-<dt>列表</dt>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-<dd>自定义列表</dd>
-</dl>
-<p>
-<body>
-<p>
-<h5>你好世界！</h5>
-<p>
-<table border="1" cellspacing="0"  cellpadding="10">
-               <thead> <!-- 新建表头 -->
-                        <tr>   <!-- 新建行 -->
-                                 <th>月考成绩</th>  <!--   新建条目  -->
-                         </tr>
-               </thead>
-</table>
-<tbody>
-                       <tr>
-                                <td>数学:93</td>
-                                <td>科学:98</td>
-                                <td>道德与法治:100</td>
-                                <td>英语:95</td>
-                                <td>语文:96</td>
-                                <td>总分:483</td>
-                        </tr>
-<p>
-</tbody>
-          <tfoot>
-                     <tr>
-                             <td>月考成绩</td>
-                     </tr>
-          </tfoot>
-<p>
-<h1  style="color: green">  芜湖——起飞!</h1>
-<h3 title="What can I say?">Man!（把鼠标放我头上）</h3>
-<p>
-<h2>
-  <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post">看我的抖音</a>
-</h2>
-<p>
-<form action="C:\Users\Administrator\Desktop\action.txt">
-                 脱缰凯知识问答挑战赛：<input type="text"  placeholder="这是谁"><br>
-</form>
-<p>
-<img src="C:\Users\Administrator\Desktop\2025-06-07 191643.png"/>
-<form action="C:\Users\Administrator\Desktop\action.txt">
-                 这是什么：<input type="text"  placeholder="这是什么"><br>
-</form>
-<p>
-<img src="D:\Pictures\OIP-C.jfif"
-<p>
-<h2 title="雷总牛逼">Are You Okay?</h2>
-<audio src="C:\Users\Administrator\Music\Are You OK - 雷军.mp3" controls="controls"></audio>
-<h2>小黑子漏出鸡脚了吧</h2>
-<a href="https://www.bilibili.com/video/BV17v4y117C5/">我不是ikun</a>
-<p></p>
-<img src="D:\html\download.jpg"/>
-<p></p>
-<a href="https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup318/">这是什么东东？</a>
+    <!-- 头部区域 -->
+    <header>
+        <div class="container">
+            <div class="profile">
+                <img src="1.jpg" alt="牢大说电脑" class="avatar">
+                <h1 class="name">牢大说电脑</h1>
+                <p class="tagline">科技爱好者 | 硬件评测 | 软件教程 | 数码生活</p>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 导航栏 -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">牢大说电脑</div>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#blog">博客</a></li>
+                <li><a href="#contact">联系我</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 主要内容 -->
+    <main class="container">
+        <!-- 关于我部分 -->
+        <section id="about" class="section">
+            <h2 class="section-title">关于我</h2>
+            <div class="about-content">
+                <div>
+                    <img src="1.jpg" alt="牢大说电脑" style="width: 100%; border-radius: 10px;">
+                </div>
+                <div class="about-text">
+                    <p>大家好，我是牢大说电脑，一名热爱科技的博主。我专注于电脑硬件、软件应用、数码产品评测和科技生活分享。</p>
+                    <p>在这个快速发展的数字时代，我希望通过我的分享，帮助大家更好地理解和使用科技产品，让科技真正服务于我们的生活。</p>
+                    <p>我会定期更新关于电脑硬件评测、软件使用技巧、数码产品开箱等内容，欢迎大家关注我的抖音账号，获取最新内容！</p>
+                    <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post" class="douyin-link" target="_blank">
+                        <i>📱</i> 关注我的抖音
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 博客文章部分 -->
+        <section id="blog" class="section">
+            <h2 class="section-title">最新文章</h2>
+            <div class="blog-grid">
+                <!-- 博客文章1 -->
+                <article class="blog-card">
+                    <div class="blog-image" style="background-color: #4a90e2;"></div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">2023年最佳游戏显卡推荐</h3>
+                        <p class="blog-excerpt">全面分析当前市场上各价位段最佳游戏显卡，帮助你在预算内做出最佳选择...</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </article>
+                
+                <!-- 博客文章2 -->
+                <article class="blog-card">
+                    <div class="blog-image" style="background-color: #50c878;"></div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Windows 11隐藏功能大揭秘</h3>
+                        <p class="blog-excerpt">发现Windows 11中那些不为人知但极其实用的功能，提升你的使用体验...</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </article>
+                
+                <!-- 博客文章3 -->
+                <article class="blog-card">
+                    <div class="blog-image" style="background-color: #ff6b6b;"></div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">DIY电脑组装完全指南</h3>
+                        <p class="blog-excerpt">从零开始教你如何选择配件、组装电脑并安装系统，打造属于自己的专属电脑...</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post" class="social-link" target="_blank">📱</a>
+                <!-- 可以添加更多社交媒体链接 -->
+            </div>
+            <p class="copyright">© 2023 牢大说电脑. 保留所有权利.</p>
+        </div>
+    </footer>
 </body>
 </html>
