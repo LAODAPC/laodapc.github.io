@@ -1,10 +1,12 @@
-name: Fix Data Now
+name: Update Douyin Stats
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # 每6小时一次
+  workflow_dispatch:        # 手动触发
 
 jobs:
-  fix-data:
+  update-stats:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -14,21 +16,37 @@ jobs:
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.PAT }}
+        fetch-depth: 0
     
-    - name: Create data directory
-      run: mkdir -p data
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
     
-    - name: Write new data file
+    - name: Install dependencies
+      run: pip install requests beautifulsoup4
+    
+    - name: Update Douyin statistics
       run: |
-        echo '{"followers": 0, "likes": 0, "videos": 0, "lastUpdate": "'$(date +"%Y-%m-%d %H:%M:%S")'", "status": "real_data", "source": "fixed"}' > data/stats.json
+        echo "开始执行抖音数据更新..."
+        python scripts/update_stats.py
+        echo "查看更新后的文件内容:"
+        cat data/stats.json
     
-    - name: Show file content
-      run: cat data/stats.json
-    
-    - name: Commit changes
+    - name: Commit and push changes
       run: |
-        git config user.email "action@github.com"
-        git config user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        
+        # 同步最新代码
+        git pull origin main --rebase --autostash
+        
+        # 检查是否有变化
         git add data/stats.json
-        git commit -m "FIX: Real data" || exit 0
-        git push
+        if git diff --staged --quiet; then
+          echo "没有数据变化，跳过提交"
+        else
+          git commit -m "🤖 Auto-update: 抖音粉丝数据更新 $(date +'%Y-%m-%d %H:%M:%S')"
+          git push origin main
+          echo "数据已提交并推送"
+        fi
