@@ -1,15 +1,10 @@
-name: Update Douyin Stats
+name: Debug Data Update
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'  # 每6小时一次
-  workflow_dispatch:        # 手动触发
-  # 删除或注释掉下面两行：
-  # push:
-  #   branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  update-stats:
+  debug-update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,39 +14,54 @@ jobs:
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.PAT }}
-        fetch-depth: 0
-        
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Update Douyin statistics
+    
+    - name: Debug Current State
       run: |
-        echo "开始执行抖音数据更新..."
-        # 直接创建真实零数据
+        echo "=== 调试开始 ==="
+        echo "当前目录:"
+        pwd
+        ls -la
+        echo "data目录内容:"
+        ls -la data/ || echo "data目录不存在"
+        echo "当前stats.json内容:"
+        cat data/stats.json || echo "文件不存在"
+        echo "=== 调试结束 ==="
+    
+    - name: Force Write New Data
+      run: |
+        echo "=== 强制写入新数据 ==="
+        # 确保目录存在
         mkdir -p data
-        echo '{
-          "followers": 0,
-          "likes": 0,
-          "videos": 0,
-          "lastUpdate": "'"$(date +"%Y-%m-%d %H:%M:%S")"'",
-          "status": "real_zero_data",
-          "source": "fixed_workflow"
-        }' > data/stats.json
-        echo "数据更新完成"
+        # 强制写入全新数据（带时间戳验证）
+        CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+        echo "写入时间: $CURRENT_TIME"
         
-    - name: Commit and push changes
+        cat > data/stats.json << EOF
+{
+  "followers": 999,
+  "likes": 777,
+  "videos": 555,
+  "lastUpdate": "$CURRENT_TIME",
+  "status": "debug_test",
+  "source": "debug_workflow"
+}
+EOF
+        
+        echo "写入后文件内容:"
+        cat data/stats.json
+        echo "=== 写入完成 ==="
+    
+    - name: Verify and Commit
       run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git fetch origin
-        git reset --hard origin/main
+        echo "=== 验证和提交 ==="
+        git config user.email "action@github.com"
+        git config user.name "GitHub Action"
+        
+        echo "提交前文件状态:"
+        git status
+        git diff data/stats.json || echo "无差异"
+        
         git add data/stats.json
-        if git diff --staged --quiet; then
-          echo "没有数据变化，跳过提交"
-        else
-          git commit -m "🤖 Auto-update: 抖音粉丝数据更新 $(date +'%Y-%m-%d %H:%M:%S')"
-          git push origin main
-          echo "数据已提交并推送"
-        fi
+        git commit -m "🔧 DEBUG: 测试数据写入 - $(date +'%H:%M:%S')" || echo "无变化可提交"
+        git push
+        echo "=== 完成 ==="
