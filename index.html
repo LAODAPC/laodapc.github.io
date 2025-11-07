@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>牢大说电脑 - 科技博主</title>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMUExQjFDIi8+CjxwYXRoIGQ9Ik0zMiAxNkMzMiAxNiAzMiAxNiAzMiAxNkMzMiAxNiAzMiAxNiAzMiAxNkMzMiAxNiAzMiAxNiAzMiAxNloiIGZpbGw9IiNGRkZGRkYiLz4KPHBhdGggZD0iTTI0IDI0SDRWNDBIMjRWNTZINDBWMzZINTZWMjRIMzZWMTRIMjRWMjRaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik00OCAyOEM0OCAzMS4zMTM3IDQ1LjMxMzcgMzQgNDIgMzRDNDAgMzQgMzggMzMgMzcgMzFDNDAgMzAgNDIgMjcgNDIgMjRDNDIgMjEgNDAgMTggMzcgMTdDMzggMTUgNDAgMTQgNDIgMTRDNDUuMzEzNyAxNCA0OCAxNi42ODYzIDQ4IDIwQzQ4IDIzLjMxMzcgNDUuMzEzNyAyNiA0MiAyNkM0MCAyNiAzOCAyNSAzNyAyM0M0MCAyMiA0MiAxOSA0MiAxNkM0MiAxMyA0MCAxMCAzNyA5QzM4IDcgNDAgNiA0MiA2QzQ1LjMxMzcgNiA0OCA4LjY4NjI5IDQ4IDEyQzQ4IDE1LjMxMzcgNDUuMzEzNyAxOCA0MiAxOEM0MCAxOCAzOCAxNyAzNyAxNUM0MCAxNCA0MiAxMSA0MiA4QzQyIDUgNDAgMiAzNyAxQzM4IC0xIDQwIC0yIDQyIC0yQzQ1LjMxMzcgLTIgNDggMC42ODYyOTIgNDggNEM0OCA3LjMxMzcxIDQ1LjMxMzcgMTAgNDIgMTBDNDAgMTAgMzggOSAzNyA3QzQwIDYgNDIgMyA0MiAwQzQyIC0zIDQwIC02IDM3IC03QzM4IC05IDQwIC0xMCA0MiAtMTBDNDUuMzEzNyAtMTAgNDggLTcuMzEzNzEgNDggLTRDNDggLTAuNjg2MjkyIDQ1LjMxMzcgMiA0MiAyQzQwIDIgMzggMSAzNyAtMUM0MCAwIDQyIDMgNDIgNkM0MiA5IDQwIDEyIDM3IDEzQzM4IDE1IDQwIDE2IDQyIDE2QzQ1LjMxMzcgMTYgNDggMTguNjg2MyA0OCAyMloiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+Cg==">
+    <title>牢大说电脑 - 科技博主与资源下载</title>
+    <!-- 使用您的头像作为标签页图标 -->
+    <link rel="icon" type="image/x-icon" href="./images/1.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -20,7 +20,6 @@
             --secondary: #b21f1f;
             --accent: #fdbb2d;
             --light: #f5f7fa;
-            --dark: #1a2a6c;
             --gradient: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
         }
         
@@ -44,18 +43,6 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-position: center;
         }
         
         .profile {
@@ -200,14 +187,14 @@
             font-size: 1.2rem;
         }
         
-        /* 博客文章部分 */
-        .blog-grid {
+        /* 下载资源部分 */
+        .download-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
         }
         
-        .blog-card {
+        .download-card {
             background: white;
             border-radius: 10px;
             overflow: hidden;
@@ -215,44 +202,81 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .blog-card:hover {
+        .download-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .blog-image {
-            height: 200px;
-            background-color: #eee;
-            background-size: cover;
-            background-position: center;
+        .download-icon {
+            height: 120px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
         }
         
-        .blog-content {
+        .download-content {
             padding: 20px;
         }
         
-        .blog-title {
+        .download-title {
             font-size: 1.2rem;
             margin-bottom: 10px;
         }
         
-        .blog-meta {
-            font-size: 0.8rem;
-            color: #777;
-            margin-bottom: 10px;
-        }
-        
-        .blog-excerpt {
+        .download-description {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 15px;
         }
         
-        .read-more {
-            color: var(--primary);
+        .download-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: var(--gradient);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* 蓝奏云链接样式 */
+        .lanzou-link {
+            display: inline-flex;
+            align-items: center;
+            background: #1E90FF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        .lanzou-link:hover {
+            background: #0066CC;
+        }
+        
+        .lanzou-link i {
+            margin-right: 8px;
         }
         
         /* 页脚 */
@@ -321,10 +345,9 @@
     <header>
         <div class="container">
             <div class="profile">
-                <!-- 将1.jpg替换为您的实际头像路径 -->
                 <img src="./images/1.jpg" alt="牢大说电脑" class="avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 viewBox=%220 0 150 150%22><rect width=%22150%22 height=%22150%22 fill=%22%233498db%22/><text x=%2275%22 y=%2280%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
                 <h1 class="name">牢大说电脑</h1>
-                <p class="tagline">科技爱好者 | 硬件评测 | 软件教程 | 数码生活</p>
+                <p class="tagline">科技爱好者 | 硬件评测 | 软件教程 | 资源分享</p>
             </div>
         </div>
     </header>
@@ -338,7 +361,7 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#about">关于我</a></li>
-                <li><a href="#blog">博客</a></li>
+                <li><a href="#downloads">资源下载</a></li>
                 <li><a href="#contact">联系我</a></li>
             </ul>
         </div>
@@ -351,13 +374,12 @@
             <h2 class="section-title">关于我</h2>
             <div class="about-content">
                 <div>
-                    <!-- 将1.jpg替换为您的实际头像路径 -->
                     <img src="./images/1.jpg" alt="牢大说电脑" style="width: 100%; border-radius: 10px;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22 viewBox=%220 0 300 200%22><rect width=%22300%22 height=%22200%22 fill=%22%233498db%22/><text x=%22150%22 y=%22100%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
                 </div>
                 <div class="about-text">
                     <p>大家好，我是牢大说电脑，一名热爱科技的博主。我专注于电脑硬件、软件应用、数码产品评测和科技生活分享。</p>
                     <p>在这个快速发展的数字时代，我希望通过我的分享，帮助大家更好地理解和使用科技产品，让科技真正服务于我们的生活。</p>
-                    <p>我会定期更新关于电脑硬件评测、软件使用技巧、数码产品开箱等内容，欢迎大家关注我的抖音账号，获取最新内容！</p>
+                    <p>我会定期分享实用的软件工具和系统优化资源，欢迎大家关注我的抖音账号，获取最新内容！</p>
                     <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post" class="douyin-link" target="_blank">
                         <i class="fab fa-tiktok"></i> 关注我的抖音
                     </a>
@@ -365,52 +387,42 @@
             </div>
         </section>
         
-        <!-- 博客文章部分 -->
-        <section id="blog" class="section">
-            <h2 class="section-title">最新文章</h2>
-            <div class="blog-grid">
-                <!-- 文章1 -->
-                <article class="blog-card">
-                    <div class="blog-image" style="background-color: #4a90e2;"></div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">如何搭建个人博客网站</h3>
-                        <div class="blog-meta">2023年10月15日</div>
-                        <p class="blog-excerpt">详细讲解如何使用GitHub Pages免费搭建个人博客网站，无需服务器和域名费用...</p>
-                        <a href="#" class="read-more">阅读更多 →</a>
+        <!-- 资源下载部分 -->
+        <section id="downloads" class="section">
+            <h2 class="section-title">资源下载</h2>
+            <p style="margin-bottom: 20px;">以下是我整理的实用软件和工具，点击下载按钮获取资源：</p>
+            
+            <div class="download-grid">
+                <!-- 下载项1 -->
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fas fa-tools"></i>
                     </div>
-                </article>
+                    <div class="download-content">
+                        <h3 class="download-title">Minecraft PCL2 启动器</h3>
+                        <div class="download-meta">
+                            <span>大小: 5.5MB</span>
+                            <span>更新: 2025-11-7</span>
+                        </div>
+                        <p class="download-description">可用于启动各版本Java版Minecraft我的世界</p>
+                        <a href="https://laodapc.lanzouu.com/b016kd6ywj" class="download-btn" target="_blank">
+                            <i class="fas fa-download"></i> 蓝奏云下载 密码：PCL2
+                        </a>
+                    </div>
+                </div>
                 
-                <!-- 文章2 -->
-                <article class="blog-card">
-                    <div class="blog-image" style="background-color: #50c878;"></div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">2023年最佳电脑配置推荐</h3>
-                        <div class="blog-meta">2023年10月10日</div>
-                        <p class="blog-excerpt">根据不同预算和使用场景，推荐几套高性价比的电脑配置方案...</p>
-                        <a href="#" class="read-more">阅读更多 →</a>
-                    </div>
-                </article>
-                
-                <!-- 文章3 -->
-                <article class="blog-card">
-                    <div class="blog-image" style="background-color: #ff6b6b;"></div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">Windows系统优化技巧</h3>
-                        <div class="blog-meta">2023年10月5日</div>
-                        <p class="blog-excerpt">分享一些实用的Windows系统优化技巧，让你的电脑运行更流畅...</p>
-                        <a href="#" class="read-more">阅读更多 →</a>
-                    </div>
-                </article>
-            </div>
         </section>
         
         <!-- 联系我部分 -->
         <section id="contact" class="section">
             <h2 class="section-title">联系我</h2>
             <div style="text-align: center; padding: 20px;">
-                <p>如果您有任何问题或合作意向，欢迎通过以下方式联系我：</p>
-                <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post" class="douyin-link" style="margin-top: 20px;">
+                <p>如果您有任何问题、资源需求或合作意向，欢迎通过以下方式联系我：</p>
+                <a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=post" class="douyin-link" style="margin: 20px 10px;">
                     <i class="fab fa-tiktok"></i> 抖音私信
+                </a>
+                <a href="#" class="lanzou-link">
+                    <i class="fas fa-cloud-download-alt"></i> 蓝奏云主页
                 </a>
             </div>
         </section>
@@ -424,7 +436,7 @@
                     <i class="fab fa-tiktok"></i>
                 </a>
             </div>
-            <p class="copyright">© 2023 牢大说电脑. 保留所有权利.</p>
+            <p class="copyright">© 2025 牢大说电脑. 保留所有权利. | 资源仅供学习交流使用</p>
         </div>
     </footer>
 </body>
