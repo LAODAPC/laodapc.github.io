@@ -2,9 +2,8 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    # 每天UTC时间4点运行（北京时间12点）
-    - cron: '0 4 * * *'
-  workflow_dispatch:
+    - cron: '0 */6 * * *'  # 每6小时运行一次
+  workflow_dispatch:        # 允许手动触发
   push:
     branches: [ main ]
 
@@ -23,14 +22,9 @@ jobs:
       with:
         python-version: '3.10'
         
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests
-        
     - name: Update Douyin statistics
       run: |
-        echo "开始执行数据更新..."
+        echo "开始执行抖音数据更新..."
         python scripts/update_stats.py
         echo "数据更新完成"
         
@@ -46,5 +40,5 @@ jobs:
         else
           git commit -m "🤖 Auto-update: 抖音粉丝数据更新"
           git push
-          echo "数据已提交"
+          echo "数据已提交并推送"
         fi
