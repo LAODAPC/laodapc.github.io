@@ -2,8 +2,8 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每6小时运行一次
-  workflow_dispatch:        # 允许手动触发
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -11,11 +11,14 @@ jobs:
   update-stats:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}  # 重要：改为使用 PAT
         
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -34,8 +37,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add data/stats.json
         
-        # 检查是否有变化
-        if git diff --quiet && git diff --staged --quiet; then
+        if git diff --staged --quiet; then
           echo "没有数据变化，跳过提交"
         else
           git commit -m "🤖 Auto-update: 抖音粉丝数据更新"
