@@ -2,8 +2,13 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每6小时一次
-  workflow_dispatch:        # 手动触发
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+# 关键：添加这个concurrency配置
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   update-stats:
