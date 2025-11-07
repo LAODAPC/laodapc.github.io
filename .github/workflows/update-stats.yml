@@ -1,14 +1,41 @@
+name: Update Douyin Stats
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PAT }}
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Update Douyin statistics
+      run: |
+        echo "开始执行抖音数据更新..."
+        python scripts/update_stats.py
+        echo "数据更新完成"
+        
     - name: Commit and push changes
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        
-        # 重置到最新版本
         git fetch origin
         git reset --hard origin/main
-        
         git add data/stats.json
-        
         if git diff --staged --quiet; then
           echo "没有数据变化，跳过提交"
         else
