@@ -2,8 +2,10 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每天 00:00, 06:00, 12:00, 18:00
-  workflow_dispatch:        # 保留手动触发功能
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   update-stats:
@@ -22,10 +24,10 @@ jobs:
       with:
         python-version: '3.10'
         
-        - name: Update Douyin statistics
+    - name: Update Douyin statistics
       run: |
         echo "开始执行抖音数据更新..."
-        python scripts/simple_test.py
+        python scripts/simple_test.py  # 这里修改了！
         echo "数据更新完成"
         
     - name: Commit and push changes
