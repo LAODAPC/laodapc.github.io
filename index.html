@@ -343,6 +343,65 @@
 <body>
     <!-- 头部区域 -->
     <header>
+        <script>
+// 自动加载粉丝数据
+async function loadFollowerStats() {
+    try {
+        // 添加时间戳避免缓存
+        const response = await fetch('./data/stats.json?' + new Date().getTime());
+        const data = await response.json();
+        
+        updateStatsDisplay(data);
+    } catch (error) {
+        console.error('加载数据失败:', error);
+        showBackupStats();
+    }
+}
+
+function updateStatsDisplay(data) {
+    document.getElementById('followerCount').textContent = formatNumber(data.followers);
+    document.getElementById('likesCount').textContent = formatNumber(data.likes);
+    document.getElementById('videoCount').textContent = data.videos;
+    document.getElementById('lastUpdate').textContent = data.lastUpdate;
+    
+    // 更新状态显示
+    const statusElement = document.getElementById('apiStatus');
+    if (data.status === 'auto_updated') {
+        statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 自动更新';
+        statusElement.className = 'api-status status-live';
+    } else {
+        statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
+        statusElement.className = 'api-status status-cached';
+    }
+}
+
+function showBackupStats() {
+    // 硬编码的备用数据
+    const backupData = {
+        followers: 12345,
+        likes: 56789,
+        videos: 128,
+        lastUpdate: new Date().toLocaleDateString('zh-CN')
+    };
+    updateStatsDisplay(backupData);
+    
+    document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据加载失败';
+    document.getElementById('apiStatus').className = 'api-status status-error';
+}
+
+function formatNumber(num) {
+    if (num >= 10000) {
+        return (num / 10000).toFixed(1) + '万';
+    }
+    return num.toLocaleString();
+}
+
+// 页面加载时获取数据
+document.addEventListener('DOMContentLoaded', loadFollowerStats);
+
+// 每30分钟自动刷新一次数据
+setInterval(loadFollowerStats, 30 * 60 * 1000);
+</script>
         <div class="container">
             <div class="profile">
                 <img src="./images/1.jpg" alt="牢大说电脑" class="avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 viewBox=%220 0 150 150%22><rect width=%22150%22 height=%22150%22 fill=%22%233498db%22/><text x=%2275%22 y=%2280%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
