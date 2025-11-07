@@ -1,1 +1,7 @@
-
+{
+  "followers": 12345,
+  "likes": 56789,
+  "videos": 128,
+  "lastUpdate": "2023-10-20 00:00:00",
+  "status": "initial"
+}
