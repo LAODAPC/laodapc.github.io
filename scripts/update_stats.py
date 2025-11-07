@@ -7,193 +7,196 @@ import re
 import json as json_lib
 
 def get_redirect_url(short_url):
-    """
-    获取短链接的重定向URL
-    """
+    """获取短链接的重定向URL"""
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
         req = urllib.request.Request(short_url, headers=headers)
         response = urllib.request.urlopen(req, timeout=15)
-        return response.geturl()  # 获取重定向后的真实URL
+        final_url = response.geturl()
+        print(f"重定向到: {final_url}")
+        return final_url
     except Exception as e:
         print(f"获取重定向URL失败: {e}")
         return short_url
 
-def extract_user_id_from_url(url):
-    """
-    从抖音URL中提取用户ID或sec_user_id
-    """
+def extract_sec_user_id(url):
+    """从URL中提取sec_user_id"""
     try:
         # 如果是短链接，先获取真实链接
         if 'v.douyin.com' in url:
             url = get_redirect_url(url)
-            print(f"重定向后URL: {url}")
         
         # 提取sec_user_id
-        sec_patterns = [
-            r'sec_user_id=([^&]+)',
-            r'user/([^?]+)',
-            r'profile/([^/?]+)'
+        patterns = [
+            r'sec_user_id=([A-Za-z0-9_-]+)',
+            r'user/([A-Za-z0-9_-]+)',
+            r'profile/([A-Za-z0-9_-]+)'
         ]
         
-        for pattern in sec_patterns:
+        for pattern in patterns:
             match = re.search(pattern, url)
             if match:
-                user_id = match.group(1)
-                print(f"提取到用户ID: {user_id}")
-                return user_id
+                sec_id = match.group(1)
+                print(f"提取到sec_user_id: {sec_id}")
+                return sec_id
         
+        print("未找到sec_user_id")
         return None
     except Exception as e:
-        print(f"提取用户ID失败: {e}")
+        print(f"提取sec_user_id失败: {e}")
         return None
 
-def get_douyin_by_share_link():
-    """
-    使用分享链接获取抖音数据
-    """
+def get_douyin_stats_api(sec_user_id):
+    """通过官方API获取抖音数据"""
     try:
-        # 使用你提供的分享链接
-        share_link = "https://v.douyin.com/7Rn72odFtuc/"
-        
-        print(f"处理分享链接: {share_link}")
-        user_id = extract_user_id_from_url(share_link)
-        
-        if not user_id:
-            print("无法从链接中提取用户ID")
-            return None
-        
-        # 方法1: 使用官方API
-        api_url = f"https://www.douyin.com/aweme/v1/web/user/profile/other/?sec_user_id={user_id}"
+        api_url = f"https://www.douyin.com/aweme/v1/web/user/profile/other/?sec_user_id={sec_user_id}"
         
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'application/json, text/plain, */*',
-            'Referer': f'https://www.douyin.com/user/{user_id}',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'Referer': f'https://www.douyin.com/user/{sec_user_id}',
             'X-Requested-With': 'XMLHttpRequest'
         }
         
         print(f"调用官方API: {api_url}")
         
         req = urllib.request.Request(api_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=15) as response:
+        with urllib.request.urlopen(req, timeout=20) as response:
             data = json_lib.loads(response.read().decode('utf-8'))
+            print(f"API响应: {json_lib.dumps(data, ensure_ascii=False, indent=2)}")
             
             if data.get('status_code') == 0 and 'user' in data:
                 user_info = data['user']
-                print(f"API返回数据: {user_info}")
-                
                 return {
                     "followers": user_info.get('follower_count', 0),
                     "likes": user_info.get('total_favorited', 0),
                     "videos": user_info.get('aweme_count', 0),
                     "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "status": "official_api",
-                    "source": "douyin_official"
+                    "status": "official_api_success",
+                    "source": "douyin_official_api"
                 }
             else:
-                print(f"API返回错误: {data}")
-        
-        # 方法2: 访问用户主页
-        return get_user_stats_by_web(user_id)
-        
+                print(f"API返回错误状态: {data.get('status_code')}")
+                return None
+                
     except urllib.error.HTTPError as e:
-        print(f"HTTP错误: {e.code} - {e.reason}")
+        print(f"HTTP错误 {e.code}: {e.reason}")
         return None
     except Exception as e:
-        print(f"分享链接获取失败: {e}")
+        print(f"API调用失败: {e}")
         return None
 
-def get_user_stats_by_web(user_id):
-    """
-    通过网页访问获取用户数据
-    """
+def get_douyin_stats_web(sec_user_id):
+    """通过网页解析获取数据"""
     try:
-        user_url = f"https://www.douyin.com/user/{user_id}"
+        user_url = f"https://www.douyin.com/user/{sec_user_id}"
         
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'zh-CN,zh;q=0.9',
-            'Referer': 'https://www.douyin.com/'
+            'Accept-Language': 'zh-CN,zh;q=0.9'
         }
         
-        print(f"访问用户主页: {user_url}")
+        print(f"访问网页: {user_url}")
         
         req = urllib.request.Request(user_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=15) as response:
+        with urllib.request.urlopen(req, timeout=20) as response:
             html = response.read().decode('utf-8')
             
-            # 查找JSON数据
+            # 方法1: 查找RENDER_DATA
             json_pattern = r'<script id="RENDER_DATA" type="application/json">(.*?)</script>'
             match = re.search(json_pattern, html)
             
             if match:
                 json_str = urllib.parse.unquote(match.group(1))
                 data = json_lib.loads(json_str)
-                print("找到RENDER_DATA")
+                print("找到RENDER_DATA，尝试解析...")
                 
-                # 简化版数据提取
-                followers = extract_from_json(data, ['follower_count', 'followerCount'])
-                likes = extract_from_json(data, ['total_favorited', 'totalFavorited'])
-                videos = extract_from_json(data, ['aweme_count', 'awemeCount'])
+                # 递归查找用户信息
+                def find_user_info(obj, depth=0):
+                    if depth > 8:
+                        return None
+                    if isinstance(obj, dict):
+                        if 'follower_count' in obj or 'followerCount' in obj:
+                            return obj
+                        for value in obj.values():
+                            result = find_user_info(value, depth + 1)
+                            if result:
+                                return result
+                    elif isinstance(obj, list):
+                        for item in obj:
+                            result = find_user_info(item, depth + 1)
+                            if result:
+                                return result
+                    return None
                 
-                if followers > 0:
+                user_info = find_user_info(data)
+                if user_info:
                     return {
-                        "followers": followers,
-                        "likes": likes,
-                        "videos": videos,
+                        "followers": user_info.get('follower_count', user_info.get('followerCount', 0)),
+                        "likes": user_info.get('total_favorited', user_info.get('totalFavorited', 0)),
+                        "videos": user_info.get('aweme_count', user_info.get('awemeCount', 0)),
                         "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "status": "web_data",
-                        "source": "douyin_web"
+                        "status": "web_parse_success",
+                        "source": "douyin_web_parse"
                     }
-        
-        return None
-        
+            
+            # 方法2: 正则匹配页面文本
+            print("尝试正则匹配...")
+            followers = extract_with_regex(html, ['粉丝.*?(\d+)', 'followerCount["\']?:\s*["\']?(\d+)'])
+            likes = extract_with_regex(html, ['获赞.*?(\d+)', 'totalFavorited["\']?:\s*["\']?(\d+)'])
+            videos = extract_with_regex(html, ['作品.*?(\d+)', 'awemeCount["\']?:\s*["\']?(\d+)'])
+            
+            if followers > 0:
+                return {
+                    "followers": followers,
+                    "likes": likes,
+                    "videos": videos,
+                    "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "status": "web_regex_success",
+                    "source": "douyin_web_regex"
+                }
+            
+            return None
+            
     except Exception as e:
-        print(f"网页访问失败: {e}")
+        print(f"网页解析失败: {e}")
         return None
 
-def extract_from_json(data, keys):
-    """
-    从JSON数据中提取指定键的值
-    """
-    def find_value(obj, target_keys):
-        if isinstance(obj, dict):
-            for key, value in obj.items():
-                if key in target_keys:
-                    return value
-                result = find_value(value, target_keys)
-                if result is not None:
-                    return result
-        elif isinstance(obj, list):
-            for item in obj:
-                result = find_value(item, target_keys)
-                if result is not None:
-                    return result
-        return 0
-    
-    result = find_value(data, keys)
-    return int(result) if result else 0
+def extract_with_regex(html, patterns):
+    """使用正则表达式提取数字"""
+    for pattern in patterns:
+        matches = re.findall(pattern, html, re.IGNORECASE)
+        for match in matches:
+            try:
+                num = int(match)
+                if num > 0:
+                    return num
+            except:
+                continue
+    return 0
 
 def get_fallback_stats():
-    """
-    备用方案：从文件读取上次的数据
-    """
+    """备用方案：读取上次数据"""
     try:
-        with open('data/stats.json', 'r', encoding='utf-8') as f:
-            current_data = json_lib.load(f)
-            return {
-                "followers": current_data.get("followers", 0),
-                "likes": current_data.get("likes", 0),
-                "videos": current_data.get("videos", 0),
-                "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "status": "fallback_data",
-                "source": "previous_file"
-            }
-    except FileNotFoundError:
+        if os.path.exists('data/stats.json'):
+            with open('data/stats.json', 'r', encoding='utf-8') as f:
+                current_data = json_lib.load(f)
+                # 如果之前有真实数据，就保持
+                if current_data.get('source') != 'integrated' and current_data.get('followers', 0) > 0:
+                    return {
+                        "followers": current_data.get("followers", 0),
+                        "likes": current_data.get("likes", 0),
+                        "videos": current_data.get("videos", 0),
+                        "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "status": "fallback_previous",
+                        "source": "previous_data"
+                    }
+        
+        # 如果没有历史数据，返回0
         return {
             "followers": 0,
             "likes": 0,
@@ -202,17 +205,41 @@ def get_fallback_stats():
             "status": "no_data",
             "source": "initial"
         }
+    except Exception as e:
+        print(f"读取备用数据失败: {e}")
+        return {
+            "followers": 0,
+            "likes": 0,
+            "videos": 0,
+            "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "status": "error",
+            "source": "error_fallback"
+        }
 
 def update_stats_file():
     """更新数据文件"""
-    print("开始通过分享链接获取抖音数据...")
+    print("开始获取真实抖音数据...")
     
-    # 使用分享链接获取数据
-    stats = get_douyin_by_share_link()
+    # 使用你的抖音分享链接
+    share_link = "https://v.douyin.com/7Rn72odFtuc/"
+    print(f"使用分享链接: {share_link}")
     
-    # 如果失败，使用备用方案
+    # 提取sec_user_id
+    sec_user_id = extract_sec_user_id(share_link)
+    
+    stats = None
+    
+    # 方法1: 官方API
+    if sec_user_id:
+        stats = get_douyin_stats_api(sec_user_id)
+    
+    # 方法2: 网页解析
+    if not stats and sec_user_id:
+        stats = get_douyin_stats_web(sec_user_id)
+    
+    # 方法3: 备用数据
     if not stats:
-        print("使用备用数据...")
+        print("所有方法都失败，使用备用数据...")
         stats = get_fallback_stats()
     
     # 确保data目录存在
