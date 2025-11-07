@@ -1,22 +1,51 @@
+name: Update Douyin Stats
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 每6小时一次
+  workflow_dispatch:        # 手动触发
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PAT }}
+        # 添加这行来解决冲突
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Update Douyin statistics
+      run: |
+        echo "开始执行抖音数据更新..."
+        python scripts/simple_test.py
+        echo "数据更新完成"
+        
     - name: Commit and push changes
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        
+        # 先同步到最新
+        git pull origin main --rebase
+        
         git add data/stats.json
         
         if git diff --staged --quiet; then
           echo "没有数据变化，跳过提交"
         else
-          git commit -m "🤖 Auto-update: 抖音粉丝数据更新"
-          # 添加重试和冲突处理
-          n=0
-          until [ "$n" -ge 3 ]
-          do
-            git pull --rebase origin main
-            git push && break
-            n=$((n+1))
-            echo "推送失败，重试第 $n 次..."
-            sleep 5
-          done
+          git commit -m "🤖 Auto-update: 抖音粉丝数据更新 $(date +'%Y-%m-%d %H:%M:%S')"
+          
+          # 使用强制推送避免冲突
+          git push origin main --force-with-lease
           echo "数据已提交并推送"
         fi
