@@ -2,9 +2,9 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    # 每天北京时间晚上8点运行 (UTC+8 = UTC+12)
-    - cron: '0 12 * * *'
-  workflow_dispatch:  # 允许手动触发
+    # 每天UTC时间4点运行（北京时间12点）
+    - cron: '0 4 * * *'
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -21,21 +21,30 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: '3.10'
         
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4
+        pip install requests
         
-    - name: Update statistics
+    - name: Update Douyin statistics
       run: |
+        echo "开始执行数据更新..."
         python scripts/update_stats.py
+        echo "数据更新完成"
         
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add data/stats.json
-        git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-update Douyin stats [skip ci]"
-        git push
+        
+        # 检查是否有变化
+        if git diff --quiet && git diff --staged --quiet; then
+          echo "没有数据变化，跳过提交"
+        else
+          git commit -m "🤖 Auto-update: 抖音粉丝数据更新"
+          git push
+          echo "数据已提交"
+        fi
