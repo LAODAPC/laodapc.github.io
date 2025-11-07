@@ -1,0 +1,34 @@
+name: Fix Data Now
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PAT }}
+    
+    - name: Create data directory
+      run: mkdir -p data
+    
+    - name: Write new data file
+      run: |
+        echo '{"followers": 0, "likes": 0, "videos": 0, "lastUpdate": "'$(date +"%Y-%m-%d %H:%M:%S")'", "status": "real_data", "source": "fixed"}' > data/stats.json
+    
+    - name: Show file content
+      run: cat data/stats.json
+    
+    - name: Commit changes
+      run: |
+        git config user.email "action@github.com"
+        git config user.name "GitHub Action"
+        git add data/stats.json
+        git commit -m "FIX: Real data" || exit 0
+        git push
