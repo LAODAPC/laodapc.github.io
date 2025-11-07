@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>牢大说电脑 - 科技博主与资源下载</title>
-    <!-- 使用您的头像作为标签页图标 -->
     <link rel="icon" type="image/x-icon" href="./images/1.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -73,6 +72,55 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        
+        /* 粉丝计数样式 */
+        .follower-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fdbb2d;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .last-update {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .api-status {
+            font-size: 0.7rem;
+            margin-left: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .status-live { color: #4CAF50; }
+        .status-cached { color: #FF9800; }
+        .status-error { color: #f44336; }
         
         /* 导航栏 */
         nav {
@@ -337,76 +385,51 @@
             .name {
                 font-size: 2rem;
             }
+            
+            .follower-stats {
+                gap: 15px;
+            }
+            
+            .stat-item {
+                padding: 10px 15px;
+                min-width: 100px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 头部区域 -->
     <header>
-        <script>
-// 自动加载粉丝数据
-async function loadFollowerStats() {
-    try {
-        // 添加时间戳避免缓存
-        const response = await fetch('./data/stats.json?' + new Date().getTime());
-        const data = await response.json();
-        
-        updateStatsDisplay(data);
-    } catch (error) {
-        console.error('加载数据失败:', error);
-        showBackupStats();
-    }
-}
-
-function updateStatsDisplay(data) {
-    document.getElementById('followerCount').textContent = formatNumber(data.followers);
-    document.getElementById('likesCount').textContent = formatNumber(data.likes);
-    document.getElementById('videoCount').textContent = data.videos;
-    document.getElementById('lastUpdate').textContent = data.lastUpdate;
-    
-    // 更新状态显示
-    const statusElement = document.getElementById('apiStatus');
-    if (data.status === 'auto_updated') {
-        statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 自动更新';
-        statusElement.className = 'api-status status-live';
-    } else {
-        statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
-        statusElement.className = 'api-status status-cached';
-    }
-}
-
-function showBackupStats() {
-    // 硬编码的备用数据
-    const backupData = {
-        followers: 12345,
-        likes: 56789,
-        videos: 128,
-        lastUpdate: new Date().toLocaleDateString('zh-CN')
-    };
-    updateStatsDisplay(backupData);
-    
-    document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据加载失败';
-    document.getElementById('apiStatus').className = 'api-status status-error';
-}
-
-function formatNumber(num) {
-    if (num >= 10000) {
-        return (num / 10000).toFixed(1) + '万';
-    }
-    return num.toLocaleString();
-}
-
-// 页面加载时获取数据
-document.addEventListener('DOMContentLoaded', loadFollowerStats);
-
-// 每30分钟自动刷新一次数据
-setInterval(loadFollowerStats, 30 * 60 * 1000);
-</script>
         <div class="container">
             <div class="profile">
                 <img src="./images/1.jpg" alt="牢大说电脑" class="avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 viewBox=%220 0 150 150%22><rect width=%22150%22 height=%22150%22 fill=%22%233498db%22/><text x=%2275%22 y=%2280%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
                 <h1 class="name">牢大说电脑</h1>
                 <p class="tagline">科技爱好者 | 硬件评测 | 软件教程 | 资源分享</p>
+                
+                <!-- 粉丝统计数据 -->
+                <div class="follower-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="followerCount">--</span>
+                        <span class="stat-label">抖音粉丝</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="likesCount">--</span>
+                        <span class="stat-label">获赞数量</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="videoCount">--</span>
+                        <span class="stat-label">发布作品</span>
+                    </div>
+                </div>
+                
+                <div class="last-update">
+                    最后更新: <span id="lastUpdate">--</span>
+                    <span id="apiStatus" class="api-status">加载中...</span>
+                </div>
             </div>
         </div>
     </header>
@@ -469,7 +492,7 @@ setInterval(loadFollowerStats, 30 * 60 * 1000);
                         </a>
                     </div>
                 </div>
-                
+            </div>
         </section>
         
         <!-- 联系我部分 -->
@@ -495,5 +518,75 @@ setInterval(loadFollowerStats, 30 * 60 * 1000);
             <p class="copyright">© 2025 牢大说电脑. 保留所有权利. | 资源仅供学习交流使用</p>
         </div>
     </footer>
+
+    <script>
+        // 自动加载粉丝数据
+        async function loadFollowerStats() {
+            try {
+                // 添加时间戳避免缓存
+                const response = await fetch('./data/stats.json?' + new Date().getTime());
+                const data = await response.json();
+                
+                updateStatsDisplay(data);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                showBackupStats();
+            }
+        }
+
+        function updateStatsDisplay(data) {
+            document.getElementById('followerCount').textContent = formatNumber(data.followers);
+            document.getElementById('likesCount').textContent = formatNumber(data.likes);
+            document.getElementById('videoCount').textContent = data.videos;
+            document.getElementById('lastUpdate').textContent = data.lastUpdate;
+            
+            // 更新状态显示
+            const statusElement = document.getElementById('apiStatus');
+            if (data.status === 'official_api' || data.status === 'live_data') {
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 实时数据';
+                statusElement.className = 'api-status status-live';
+            } else if (data.status === 'web_json' || data.status === 'web_regex') {
+                statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 网页数据';
+                statusElement.className = 'api-status status-live';
+            } else if (data.status === 'fallback_data' || data.status === 'backup_data') {
+                statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
+                statusElement.className = 'api-status status-cached';
+            } else if (data.status === 'manual_data') {
+                statusElement.innerHTML = '<i class="fas fa-user-edit"></i> 手动更新';
+                statusElement.className = 'api-status status-cached';
+            } else {
+                statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据异常';
+                statusElement.className = 'api-status status-error';
+            }
+        }
+
+        function showBackupStats() {
+            const backupData = {
+                followers: 0,
+                likes: 0,
+                videos: 0,
+                lastUpdate: new Date().toLocaleString('zh-CN')
+            };
+            updateStatsDisplay(backupData);
+            
+            document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据加载失败';
+            document.getElementById('apiStatus').className = 'api-status status-error';
+        }
+
+        function formatNumber(num) {
+            if (num >= 100000000) {
+                return (num / 100000000).toFixed(1) + '亿';
+            } else if (num >= 10000) {
+                return (num / 10000).toFixed(1) + '万';
+            }
+            return num.toLocaleString();
+        }
+
+        // 页面加载时获取数据
+        document.addEventListener('DOMContentLoaded', loadFollowerStats);
+
+        // 每小时自动刷新一次数据
+        setInterval(loadFollowerStats, 60 * 60 * 1000);
+    </script>
 </body>
 </html>
