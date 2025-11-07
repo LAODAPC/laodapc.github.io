@@ -10,7 +10,6 @@ on:
 jobs:
   update-stats:
     runs-on: ubuntu-latest
-    
     permissions:
       contents: write
     
@@ -18,7 +17,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.PAT }}  # 重要：改为使用 PAT
+        token: ${{ secrets.PAT }}
         
     - name: Set up Python
       uses: actions/setup-python@v4
