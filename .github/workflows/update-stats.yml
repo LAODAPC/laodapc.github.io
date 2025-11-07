@@ -2,8 +2,11 @@ name: Update Douyin Stats
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 添加缺失的引号
-  workflow_dispatch:
+    - cron: '0 */6 * * *'  # 每6小时一次
+  workflow_dispatch:        # 手动触发
+  # 删除或注释掉下面两行：
+  # push:
+  #   branches: [ main ]
 
 jobs:
   update-stats:
@@ -26,20 +29,16 @@ jobs:
     - name: Update Douyin statistics
       run: |
         echo "开始执行抖音数据更新..."
-        # 直接在工作流中创建真实数据文件
+        # 直接创建真实零数据
         mkdir -p data
-        cat > data/stats.json << 'EOF'
-        {
+        echo '{
           "followers": 0,
           "likes": 0,
           "videos": 0,
-          "lastUpdate": "$(date +"%Y-%m-%d %H:%M:%S")",
-          "status": "real_data",
-          "source": "direct_workflow"
-        }
-        EOF
-        echo "查看生成的文件内容:"
-        cat data/stats.json
+          "lastUpdate": "'"$(date +"%Y-%m-%d %H:%M:%S")"'",
+          "status": "real_zero_data",
+          "source": "fixed_workflow"
+        }' > data/stats.json
         echo "数据更新完成"
         
     - name: Commit and push changes
