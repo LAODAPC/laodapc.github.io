@@ -540,27 +540,28 @@
             document.getElementById('videoCount').textContent = data.videos;
             document.getElementById('lastUpdate').textContent = data.lastUpdate;
             
-// 更新状态显示
-const statusElement = document.getElementById('apiStatus');
-if (data.status === 'official_api' || data.status === 'live_data') {
-    statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 实时数据';
-    statusElement.className = 'api-status status-live';
-} else if (data.status === 'web_json' || data.status === 'web_regex') {
-    statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 网页数据';
-    statusElement.className = 'api-status status-live';
-} else if (data.status === 'fallback_data' || data.status === 'backup_data') {
-    statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
-    statusElement.className = 'api-status status-cached';
-} else if (data.status === 'manual_data' || data.status === 'manual_update' || data.status === 'manual_input') {
-    statusElement.innerHTML = '<i class="fas fa-user-edit"></i> 手动更新';
-    statusElement.className = 'api-status status-cached';
-} else if (data.status === 'real_data') {
-    statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 真实数据';
-    statusElement.className = 'api-status status-live';
-} else {
-    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据异常';
-    statusElement.className = 'api-status status-error';
-}
+            // 更新状态显示
+            const statusElement = document.getElementById('apiStatus');
+            if (data.status === 'official_api' || data.status === 'live_data') {
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 实时数据';
+                statusElement.className = 'api-status status-live';
+            } else if (data.status === 'web_json' || data.status === 'web_regex') {
+                statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 网页数据';
+                statusElement.className = 'api-status status-live';
+            } else if (data.status === 'fallback_data' || data.status === 'backup_data') {
+                statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
+                statusElement.className = 'api-status status-cached';
+            } else if (data.status === 'manual_data' || data.status === 'manual_update' || data.status === 'manual_input') {
+                statusElement.innerHTML = '<i class="fas fa-user-edit"></i> 手动更新';
+                statusElement.className = 'api-status status-cached';
+            } else if (data.status === 'real_data') {
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 真实数据';
+                statusElement.className = 'api-status status-live';
+            } else {
+                statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据异常';
+                statusElement.className = 'api-status status-error';
+            }
+        } // 这里添加了缺失的结束大括号
 
         function showBackupStats() {
             const backupData = {
