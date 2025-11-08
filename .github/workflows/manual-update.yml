@@ -35,7 +35,7 @@ jobs:
       run: |
         echo "开始手动更新抖音数据..."
         mkdir -p data
-        cat > data/stats.json << EOF
+        cat > data/stats.json << 'EOF'
 {
   "followers": ${{ github.event.inputs.followers }},
   "likes": ${{ github.event.inputs.likes }},
