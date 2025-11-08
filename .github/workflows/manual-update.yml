@@ -1,0 +1,58 @@
+name: Manual Update Stats
+
+on:
+  workflow_dispatch:
+    inputs:
+      followers:
+        description: '抖音粉丝数量'
+        required: true
+        type: number
+        default: 0
+      likes:
+        description: '抖音获赞数量'
+        required: true
+        type: number
+        default: 0
+      videos:
+        description: '抖音作品数量'
+        required: true
+        type: number
+        default: 0
+
+jobs:
+  manual-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PAT }}
+    
+    - name: Update stats manually
+      run: |
+        echo "开始手动更新抖音数据..."
+        mkdir -p data
+        cat > data/stats.json << EOF
+{
+  "followers": ${{ github.event.inputs.followers }},
+  "likes": ${{ github.event.inputs.likes }},
+  "videos": ${{ github.event.inputs.videos }},
+  "lastUpdate": "$(date +"%Y-%m-%d %H:%M:%S")",
+  "status": "manual_update",
+  "source": "manual_input"
+}
+EOF
+        echo "更新后的数据:"
+        cat data/stats.json
+    
+    - name: Commit changes
+      run: |
+        git config user.email "action@github.com"
+        git config user.name "GitHub Action"
+        git add data/stats.json
+        git commit -m "📊 手动更新: 粉丝 ${{ github.event.inputs.followers }} | 获赞 ${{ github.event.inputs.likes }} | 作品 ${{ github.event.inputs.videos }}"
+        git push
+        echo "✅ 数据更新完成!"
