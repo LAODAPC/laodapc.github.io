@@ -1,973 +1,56 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>牢大说电脑 - 科技博主与资源下载</title>
-    <link rel="icon" type="image/x-icon" href="./images/1.jpg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* 原有CSS代码完全不变 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
-        
-        :root {
-            --primary: #1a2a6c;
-            --secondary: #b21f1f;
-            --accent: #fdbb2d;
-            --light: #f5f7fa;
-            --gradient: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-        }
-        
-        body {
-            background-color: var(--light);
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* 头部样式 */
-        header {
-            background: var(--gradient);
-            color: white;
-            padding: 80px 0 60px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .profile {
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .name {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* 粉丝计数样式 */
-        .follower-stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 25px;
-            border-radius: 15px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            min-width: 120px;
-        }
-        
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fdbb2d;
-            display: block;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .last-update {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .api-status {
-            font-size: 0.7rem;
-            margin-left: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .status-live { color: #4CAF50; }
-        .status-cached { color: #FF9800; }
-        .status-error { color: #f44336; }
-        
-        /* 导航栏 */
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            color: var(--accent);
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        /* 主要内容区域 */
-        main {
-            padding: 60px 0;
-        }
-        
-        .section {
-            margin-bottom: 60px;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: var(--primary);
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--gradient);
-        }
-        
-        /* 关于我部分 */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-            align-items: center;
-        }
-        
-        .about-text p {
-            margin-bottom: 20px;
-        }
-        
-        /* 抖音链接样式 */
-        .douyin-link {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(45deg, #FE2C55, #25F4EE);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(254, 44, 85, 0.3);
-        }
-        
-        .douyin-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(254, 44, 85, 0.4);
-        }
-        
-        .douyin-link i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        /* 赞助码样式 - 仅添加这部分 */
-        .sponsor-section {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-        
-        .sponsor-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-        
-        .sponsor-description {
-            color: #666;
-            margin-bottom: 25px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .sponsor-qr {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .sponsor-qr img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .sponsor-note {
-            font-size: 0.9rem;
-            color: #777;
-            font-style: italic;
-        }
-        
-        /* 下载资源部分 */
-        .download-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .download-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .download-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .download-icon {
-            height: 120px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5rem;
-        }
-        
-        .download-content {
-            padding: 20px;
-        }
-        
-        .download-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        
-        .download-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        .download-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #777;
-            margin-bottom: 15px;
-        }
-        
-        .download-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: var(--gradient);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* 蓝奏云链接样式 */
-        .lanzou-link {
-            display: inline-flex;
-            align-items: center;
-            background: #1E90FF;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 10px;
-            transition: background 0.3s;
-        }
-        
-        .lanzou-link:hover {
-            background: #0066CC;
-        }
-        
-        .lanzou-link i {
-            margin-right: 8px;
-        }
-        
-        /* 页脚 */
-        footer {
-            background-color: var(--primary);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            margin: 0 10px;
-            color: white;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        
-        .social-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .copyright {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-            }
-            
-            .nav-links {
-                margin-top: 15px;
-            }
-            
-            .nav-links li {
-                margin: 0 10px;
-            }
-            
-            .name {
-                font-size: 2rem;
-            }
-            
-            .follower-stats {
-                gap: 15px;
-            }
-            
-            .stat-item {
-                padding: 10px 15px;
-                min-width: 100px;
-            }
-            
-            .stat-number {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- 头部区域 -->
-    <header>
-        <div class="container">
-            <div class="profile">
-                <img src="./images/1.jpg" alt="牢大说电脑" class="avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 viewBox=%220 0 150 150%22><rect width=%22150%22 height=%22150%22 fill=%22%233498db%22/><text x=%2275%22 y=%2280%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
-                <h1 class="name">牢大说电脑</h1>
-                <p class="tagline">科技爱好者 | 硬件评测 | 软件教程 | 资源分享</p>
-                
-                <!-- 粉丝统计数据 -->
-                <div class="follower-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="followerCount">--</span>
-                        <span class="stat-label">抖音粉丝</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="likesCount">--</span>
-                        <span class="stat-label">获赞数量</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="videoCount">--</span>
-                        <span class="stat-label">发布作品</span>
-                    </div>
-                </div>
-                
-                <div class="last-update">
-                    最后更新: <span id="lastUpdate">--</span>
-                    <span id="apiStatus" class="api-status">加载中...</span>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <!-- 导航栏 -->
-    <nav>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-laptop-code"></i>
-                牢大说电脑
-            </div>
-            <ul class="nav-links">
-                <li><a href="#about">关于我</a></li>
-                <li><a href="#downloads">资源下载</a></li>
-                <li><a href="#deepseek-chat">AI助手</a></li>
-                <li><a href="#contact">联系我</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- 主要内容 -->
-    <main class="container">
-        <!-- 关于我部分 -->
-        <section id="about" class="section">
-            <h2 class="section-title">关于我</h2>
-            <div class="about-content">
-                <div>
-                    <img src="./images/1.jpg" alt="牢大说电脑" style="width: 100%; border-radius: 10px;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22 viewBox=%220 0 300 200%22><rect width=%22300%22 height=%22200%22 fill=%22%233498db%22/><text x=%22150%22 y=%22100%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22>牢大说电脑</text></svg>'">
-                </div>
-                <div class="about-text">
-                    <p>大家好，我是牢大说电脑，一名热爱科技的博主。我专注于电脑硬件、软件应用、数码产品评测和科技生活分享。</p>
-                    <p>在这个快速发展的数字时代，我希望通过我的分享，帮助大家更好地理解和使用科技产品，让科技真正服务于我们的生活。</p>
-                    <p>我会定期分享实用的软件工具和系统优化资源，欢迎大家关注我的抖音账号，获取最新内容！</p>
-                    <a href="https://v.douyin.com/7Rn72odFtuc/" class="douyin-link" target="_blank">
-                        <i class="fab fa-tiktok"></i> 关注我的抖音
-                    </a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 资源下载部分 -->
-        <section id="downloads" class="section">
-            <h2 class="section-title">资源下载</h2>
-            
-            <!-- 赞助码部分 - 新增内容 -->
-            <div class="sponsor-section">
-                <h3 class="sponsor-title">赞助支持</h3>
-                <p class="sponsor-description">
-                    如果您觉得我的分享对您有帮助，欢迎通过扫码赞助支持。您的支持是我持续分享优质内容的动力！
-                </p>
-                <div class="sponsor-qr">
-                    <img src="2.jpg" alt="赞助收款码">
-                </div>
-                <p class="sponsor-note">感谢您的支持！所有赞助将用于服务器维护和内容创作</p>
-            </div>
-            
-            <p style="margin-bottom: 20px;">以下是我整理的实用软件和工具，点击下载按钮获取资源：</p>
-            
-            <div class="download-grid">
-                <!-- 下载项1 -->
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="download-content">
-                        <h3 class="download-title">Minecraft PCL2 启动器</h3>
-                        <div class="download-meta">
-                            <span>大小: 5.5MB</span>
-                            <span>更新: 2025-11-7</span>
-                        </div>
-                        <p class="download-description">可用于启动各版本Java版Minecraft我的世界</p>
-                        <a href="https://laodapc.lanzouu.com/b016kd6ywj" class="download-btn" target="_blank">
-                            <i class="fas fa-download"></i> 蓝奏云下载 密码：PCL2
-                        </a>
-                    </div>
-                </div>
-            
-                <!-- 下载项2 -->
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="download-content">
-                        <h3 class="download-title">Minecraft PCL2 CE 启动器</h3>
-                        <div class="download-meta">
-                            <span>大小: 12.5MB</span>
-                            <span>更新: 2025-11-8</span>
-                        </div>
-                        <p class="download-description">可用于启动各版本Java版Minecraft我的世界,比PCL 2多了一些功能 注：此版本为社区（玩家自制）版，可能不稳定</p>
-                        <a href="https://t-bu.cn/b016kd8xra" class="download-btn" target="_blank">
-                            <i class="fas fa-download"></i> 蓝奏云下载 密码：PCL2CE
-                        </a>
-                    </div>
-                </div>
-            
-                <!-- 下载项3 -->
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="download-content">
-                        <h3 class="download-title">Minecraft PCL2 快照 启动器</h3>
-                        <div class="download-meta">
-                            <span>大小: 5.6MB</span>
-                            <span>更新: 2025-11-17</span>
-                        </div>
-                        <p class="download-description">可用于启动各版本Java版Minecraft我的世界,此版本为付费快照版，请在下载后的24小时内将其删除</p>
-                        <a href="https://laodapc.lanzouu.com/b016kdyrwf" class="download-btn" target="_blank">
-                            <i class="fas fa-download"></i> 蓝奏云下载 密码：PCL快照
-                        </a>
-                    </div>
-                </div>
-            
-                <!-- 下载项4 -->
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="download-content">
-                        <h3 class="download-title">瓦瓦变声器</h3>
-                        <div class="download-meta">
-                            <span>大小: 99.6MB</span>
-                            <span>更新: 2025-11-18</span>
-                        </div>
-                        <p class="download-description">可制作瓦瓦同款变声器，详细看抖音教程</p>
-                        <a href="https://laodapc.lanzouu.com/b016ke1p6f" class="download-btn" target="_blank">
-                            <i class="fas fa-download"></i> 蓝奏云下载 密码：疯歌
-                        </a>
-                    </div>
-                </div>
-            
-                <!-- 下载项5 -->
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="download-content">
-                        <h3 class="download-title">steamking</h3>
-                        <div class="download-meta">
-                            <span>大小: 100.0MB</span>
-                            <span>更新: 2025-12-14</span>
-                        </div>
-                        <p class="download-description">可入库绝大多数steam游戏，详细看抖音教程</p>
-                        <a href="https://www.123865.com/s/nhK1jv-cU7ad?pwd=king#" class="download-btn" target="_blank">
-                            <i class="fas fa-download"></i> 123盘下载 密码：king
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
 <!-- DeepSeek AI助手部分 -->
-<section id="deepseek-chat" class="section" style="
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-    border-radius: 30px;
-    padding: 40px;
-    margin: 60px auto;
-    max-width: 900px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-">
-    <!-- 背景装饰元素 -->
-    <div style="
-        position: absolute;
-        top: -100px;
-        right: -100px;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(26, 42, 108, 0.1) 0%, transparent 70%);
-        border-radius: 50%;
-        z-index: 0;
-    "></div>
-    <div style="
-        position: absolute;
-        bottom: -80px;
-        left: -80px;
-        width: 250px;
-        height: 250px;
-        background: radial-gradient(circle, rgba(253, 187, 45, 0.1) 0%, transparent 70%);
-        border-radius: 50%;
-        z-index: 0;
-    "></div>
+<section id="deepseek-chat" class="section">
+    <h2 class="section-title">AI助手问答</h2>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <p>有问题想问？让DeepSeek AI助手帮你解答！可以咨询电脑配置、软件使用、科技问题等。</p>
+    </div>
     
-    <div style="position: relative; z-index: 1;">
-        <h2 class="section-title" style="
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        ">
-            <i class="fas fa-robot" style="margin-right: 15px; color: var(--accent);"></i>
-            AI智能助手
-        </h2>
-        
-        <div style="text-align: center; margin-bottom: 30px;">
-            <p style="
-                color: #e0e0e0;
-                font-size: 1.1rem;
-                max-width: 600px;
-                margin: 0 auto 20px;
-                line-height: 1.6;
-            ">
-                让AI帮你解答电脑配置、软件使用、科技问题等专业咨询
-            </p>
-            <div style="
-                display: inline-flex;
-                align-items: center;
-                background: rgba(255, 255, 255, 0.1);
-                padding: 8px 20px;
-                border-radius: 20px;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            ">
-                <i class="fas fa-bolt" style="color: var(--accent); margin-right: 8px;"></i>
-                <span style="color: #b0b0b0; font-size: 0.9rem;">基于DeepSeek最新AI模型</span>
-            </div>
-        </div>
-        
+    <div style="max-width: 800px; margin: 0 auto;">
         <!-- 聊天容器 -->
-        <div id="chat-container" style="
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        ">
+        <div id="chat-container" style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 500px; display: flex; flex-direction: column;">
             <!-- 消息区域 -->
-            <div id="chat-messages" style="
-                flex: 1;
-                overflow-y: auto;
-                margin-bottom: 20px;
-                padding: 15px;
-                border-radius: 15px;
-                background: rgba(15, 15, 15, 0.6);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                scrollbar-width: thin;
-                scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
-            ">
-                <!-- 自定义滚动条样式 -->
-                <style>
-                    #chat-messages::-webkit-scrollbar {
-                        width: 6px;
-                    }
-                    #chat-messages::-webkit-scrollbar-track {
-                        background: rgba(255, 255, 255, 0.05);
-                        border-radius: 3px;
-                    }
-                    #chat-messages::-webkit-scrollbar-thumb {
-                        background: var(--accent);
-                        border-radius: 3px;
-                    }
-                </style>
-                
-                <div class="message ai-message" style="
-                    background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
-                    color: #f0f0f0;
-                    padding: 15px 20px;
-                    border-radius: 18px;
-                    margin-bottom: 15px;
-                    max-width: 85%;
-                    border: 1px solid rgba(255, 255, 255, 0.05);
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(5px);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <div style="
-                            width: 32px;
-                            height: 32px;
-                            background: linear-gradient(135deg, var(--primary), var(--accent));
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin-right: 10px;
-                        ">
-                            <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
-                        </div>
-                        <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
-                    </div>
-                    <div style="line-height: 1.6;">
-                        你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
-                    </div>
+            <div id="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 20px; padding: 10px; border: 1px solid #eee; border-radius: 5px;">
+                <div class="message ai-message" style="background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;">
+                    <strong>AI助手：</strong>你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
                 </div>
             </div>
             
             <!-- 输入区域 -->
-            <div style="
-                display: flex;
-                gap: 12px;
-                background: rgba(15, 15, 15, 0.6);
-                padding: 15px;
-                border-radius: 15px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            ">
-                <input type="text" id="chat-input" placeholder="输入你的问题..." style="
-                    flex: 1;
-                    padding: 14px 20px;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 25px;
-                    font-size: 16px;
-                    outline: none;
-                    transition: all 0.3s;
-                    background: rgba(20, 20, 20, 0.8);
-                    color: #f0f0f0;
-                ">
-                <button id="send-button" style="
-                    background: linear-gradient(135deg, var(--primary), var(--secondary));
-                    color: white;
-                    border: none;
-                    padding: 14px 30px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.3);
-                ">
-                    <i class="fas fa-paper-plane"></i>
-                    <span>发送</span>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chat-input" placeholder="输入你的问题..." style="flex: 1; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 16px; outline: none; transition: border-color 0.3s;">
+                <button id="send-button" style="background: var(--gradient); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: transform 0.3s;">
+                    发送
                 </button>
-                <button id="clear-chat" style="
-                    background: rgba(255, 255, 255, 0.1);
-                    color: #b0b0b0;
-                    border: none;
-                    padding: 14px 20px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                ">
-                    <i class="fas fa-redo"></i>
-                    <span>清空</span>
+                <button id="clear-chat" style="background: #f5f5f5; color: #666; border: none; padding: 12px 15px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                    清空
                 </button>
             </div>
             
             <!-- API状态 -->
-            <div style="
-                text-align: center;
-                margin-top: 15px;
-                padding: 10px;
-                background: rgba(15, 15, 15, 0.6);
-                border-radius: 10px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            ">
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 20px;
-                    flex-wrap: wrap;
-                ">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div id="api-status-indicator" style="
-                            width: 10px;
-                            height: 10px;
-                            background: #4CAF50;
-                            border-radius: 50%;
-                            animation: pulse 2s infinite;
-                        "></div>
-                        <span style="color: #a0a0a0; font-size: 0.9rem;">在线</span>
-                    </div>
-                    <div style="height: 20px; width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-microchip" style="color: var(--accent);"></i>
-                        <span id="token-count" style="color: #a0a0a0; font-size: 0.9rem;">Tokens: 0</span>
-                    </div>
-                    <div style="height: 20px; width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-bolt" style="color: var(--accent);"></i>
-                        <span style="color: #a0a0a0; font-size: 0.9rem;">响应快速</span>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #777;">
+                <span id="api-status-indicator">● 准备就绪</span>
+                <span style="margin: 0 10px;">|</span>
+                <span id="token-count">Tokens: 0</span>
             </div>
         </div>
         
         <!-- 使用说明 -->
-        <div style="
-            margin-top: 30px;
-            padding: 25px;
-            background: rgba(20, 20, 20, 0.6);
-            border-radius: 20px;
-            font-size: 0.95rem;
-            color: #c0c0c0;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        ">
-            <h4 style="
-                margin-bottom: 15px;
-                color: var(--accent);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 1.1rem;
-            ">
-                <i class="fas fa-info-circle"></i>
-                使用说明
-            </h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                <div style="
-                    background: rgba(255, 255, 255, 0.05);
-                    padding: 15px;
-                    border-radius: 12px;
-                    border-left: 3px solid var(--primary);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <i class="fas fa-laptop" style="color: var(--accent); margin-right: 10px;"></i>
-                        <strong style="color: #f0f0f0;">专业咨询</strong>
-                    </div>
-                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
-                        电脑配置、软件安装、系统优化等问题
-                    </p>
-                </div>
-                <div style="
-                    background: rgba(255, 255, 255, 0.05);
-                    padding: 15px;
-                    border-radius: 12px;
-                    border-left: 3px solid var(--secondary);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <i class="fas fa-comments" style="color: var(--accent); margin-right: 10px;"></i>
-                        <strong style="color: #f0f0f0;">长对话支持</strong>
-                    </div>
-                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
-                        支持上下文记忆，连续对话更流畅
-                    </p>
-                </div>
-                <div style="
-                    background: rgba(255, 255, 255, 0.05);
-                    padding: 15px;
-                    border-radius: 12px;
-                    border-left: 3px solid var(--accent);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <i class="fas fa-history" style="color: var(--accent); margin-right: 10px;"></i>
-                        <strong style="color: #f0f0f0;">一键清空</strong>
-                    </div>
-                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
-                        点击清空按钮可以开始新的对话
-                    </p>
-                </div>
-            </div>
+        <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; font-size: 14px; color: #666;">
+            <h4 style="margin-bottom: 10px; color: var(--primary);">使用说明：</h4>
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• 可以咨询电脑硬件配置、软件安装、系统优化等问题</li>
+                <li style="margin-bottom: 5px;">• 支持长对话，上下文会保留</li>
+                <li style="margin-bottom: 5px;">• 点击"清空"按钮可以开始新的对话</li>
+                <li>• 响应可能需要几秒钟时间，请耐心等待</li>
+            </ul>
         </div>
     </div>
 </section>
 
-<style>
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-#chat-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(253, 187, 45, 0.1);
-}
-
-#send-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(26, 42, 108, 0.4);
-}
-
-#clear-chat:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #f0f0f0;
-}
-
-.message.user-message {
-    background: linear-gradient(135deg, rgba(178, 31, 31, 0.3) 0%, rgba(253, 187, 45, 0.1) 100%) !important;
-    color: white !important;
-}
-</style>
-
 <script>
 // DeepSeek AI助手功能
 document.addEventListener('DOMContentLoaded', function() {
+    // DeepSeek API配置 - 已使用你的API密钥
     const DEEPSEEK_API_KEY = 'sk-ac79218c268f4944815b82fd5da2429c';
     const API_URL = 'https://api.deepseek.com/v1/chat/completions';
     
@@ -978,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
+    // 获取DOM元素
     const chatInput = document.getElementById('chat-input');
     const sendButton = document.getElementById('send-button');
     const clearButton = document.getElementById('clear-chat');
@@ -985,21 +69,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiStatus = document.getElementById('api-status-indicator');
     const tokenCount = document.getElementById('token-count');
     
+    // 发送消息函数
     async function sendMessage() {
         const message = chatInput.value.trim();
         if (!message) return;
         
-        // 添加用户消息
+        // 添加用户消息到界面
         addMessageToChat('user', message);
         chatInput.value = '';
         
+        // 添加到历史记录
         conversationHistory.push({ role: "user", content: message });
         
-        // 更新状态
-        apiStatus.style.background = '#FF9800';
-        apiStatus.previousElementSibling.textContent = '思考中';
+        // 显示加载状态
+        showLoading(true);
+        apiStatus.textContent = '● 思考中...';
+        apiStatus.style.color = '#FF9800';
         
         try {
+            // 调用DeepSeek API
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -1021,99 +109,72 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             const aiResponse = data.choices[0].message.content;
             
+            // 添加到历史记录
             conversationHistory.push({ role: "assistant", content: aiResponse });
+            
+            // 显示AI回复
             addMessageToChat('ai', aiResponse);
             
             // 更新状态
-            apiStatus.style.background = '#4CAF50';
-            apiStatus.previousElementSibling.textContent = '在线';
+            apiStatus.textContent = '● 已响应';
+            apiStatus.style.color = '#4CAF50';
             tokenCount.textContent = `Tokens: ${data.usage.total_tokens || 'N/A'}`;
             
         } catch (error) {
             console.error('API调用失败:', error);
-            addMessageToChat('ai', `抱歉，出现了错误：${error.message}。请检查网络连接。`);
-            apiStatus.style.background = '#f44336';
-            apiStatus.previousElementSibling.textContent = '连接错误';
+            addMessageToChat('ai', `抱歉，出现了错误：${error.message}。请检查你的API密钥或网络连接。`);
+            apiStatus.textContent = '● 连接错误';
+            apiStatus.style.color = '#f44336';
+        } finally {
+            showLoading(false);
         }
     }
     
+    // 添加消息到聊天界面
     function addMessageToChat(sender, message) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
+        messageDiv.style.cssText = sender === 'user' 
+            ? 'background: var(--gradient); color: white; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; align-self: flex-end;'
+            : 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
         
-        if (sender === 'user') {
-            messageDiv.innerHTML = `
-                <div style="
-                    background: linear-gradient(135deg, rgba(178, 31, 31, 0.3) 0%, rgba(253, 187, 45, 0.1) 100%);
-                    color: white;
-                    padding: 15px 20px;
-                    border-radius: 18px;
-                    margin-bottom: 15px;
-                    max-width: 85%;
-                    align-self: flex-end;
-                    margin-left: auto;
-                    border: 1px solid rgba(255, 255, 255, 0.05);
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(5px);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px; justify-content: flex-end;">
-                        <strong style="color: var(--accent); font-size: 1rem; margin-right: 10px;">你</strong>
-                        <div style="
-                            width: 32px;
-                            height: 32px;
-                            background: linear-gradient(135deg, var(--secondary), var(--accent));
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        ">
-                            <i class="fas fa-user" style="color: white; font-size: 0.9rem;"></i>
-                        </div>
-                    </div>
-                    <div style="line-height: 1.6; text-align: right;">
-                        ${message}
-                    </div>
-                </div>
-            `;
-        } else {
-            messageDiv.innerHTML = `
-                <div style="
-                    background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
-                    color: #f0f0f0;
-                    padding: 15px 20px;
-                    border-radius: 18px;
-                    margin-bottom: 15px;
-                    max-width: 85%;
-                    border: 1px solid rgba(255, 255, 255, 0.05);
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(5px);
-                ">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <div style="
-                            width: 32px;
-                            height: 32px;
-                            background: linear-gradient(135deg, var(--primary), var(--accent));
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin-right: 10px;
-                        ">
-                            <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
-                        </div>
-                        <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
-                    </div>
-                    <div style="line-height: 1.6;">
-                        ${message}
-                    </div>
-                </div>
-            `;
-        }
-        
+        messageDiv.innerHTML = `<strong>${sender === 'user' ? '你' : 'AI助手'}：</strong>${message}`;
         chatMessages.appendChild(messageDiv);
+        
+        // 滚动到底部
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
+    // 显示/隐藏加载状态
+    function showLoading(show) {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (show) {
+            if (!loadingIndicator) {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'loading-indicator';
+                loadingDiv.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考</span>';
+                loadingDiv.style.cssText = 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
+                chatMessages.appendChild(loadingDiv);
+                
+                // 添加动态点
+                const dots = loadingDiv.querySelector('.loading-dots');
+                let dotCount = 0;
+                const dotInterval = setInterval(() => {
+                    dotCount = (dotCount + 1) % 4;
+                    dots.textContent = '正在思考' + '.'.repeat(dotCount);
+                }, 500);
+                
+                loadingDiv.dataset.interval = dotInterval;
+            }
+        } else {
+            if (loadingIndicator) {
+                clearInterval(loadingIndicator.dataset.interval);
+                loadingIndicator.remove();
+            }
+        }
+    }
+    
+    // 清空聊天记录
     function clearChat() {
         conversationHistory = [
             {
@@ -1122,49 +183,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ];
         
+        // 清空聊天界面，只保留第一条欢迎消息
         chatMessages.innerHTML = `
-            <div style="
-                background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
-                color: #f0f0f0;
-                padding: 15px 20px;
-                border-radius: 18px;
-                margin-bottom: 15px;
-                max-width: 85%;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                backdrop-filter: blur(5px);
-            ">
-                <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <div style="
-                        width: 32px;
-                        height: 32px;
-                        background: linear-gradient(135deg, var(--primary), var(--accent));
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-right: 10px;
-                    ">
-                        <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
-                    </div>
-                    <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
-                </div>
-                <div style="line-height: 1.6;">
-                    你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
-                </div>
+            <div class="message ai-message" style="background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;">
+                <strong>AI助手：</strong>你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
             </div>
         `;
         
-        apiStatus.style.background = '#9C27B0';
-        apiStatus.previousElementSibling.textContent = '已重置';
+        apiStatus.textContent = '● 已重置';
+        apiStatus.style.color = '#9C27B0';
         tokenCount.textContent = 'Tokens: 0';
-        
-        setTimeout(() => {
-            apiStatus.style.background = '#4CAF50';
-            apiStatus.previousElementSibling.textContent = '在线';
-        }, 1000);
     }
     
+    // 事件监听器
     sendButton.addEventListener('click', sendMessage);
     clearButton.addEventListener('click', clearChat);
     
@@ -1173,234 +204,9 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
+    
+    // 初始化API状态
+    apiStatus.textContent = '● 已连接';
+    apiStatus.style.color = '#4CAF50';
 });
 </script>
-        
-        <!-- 联系我部分 -->
-        <section id="contact" class="section">
-            <h2 class="section-title">联系我</h2>
-            <div style="text-align: center; padding: 20px;">
-                <p>如果您有任何问题或合作意向，欢迎通过以下方式联系我：</p>
-                <a href="https://v.douyin.com/7Rn72odFtuc/" class="douyin-link" style="margin-top: 20px;">
-                    <i class="fab fa-tiktok"></i> 抖音私信
-                </a>
-            </div>
-        </section>
-    </main>
-    
-    <!-- 页脚 -->
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://v.douyin.com/7Rn72odFtuc/" class="social-link" target="_blank">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-            </div>
-            <p class="copyright">© 2025 牢大说电脑. 保留所有权利. | 资源仅供学习交流使用</p>
-        </div>
-    </footer>
-
-    <script>
-        // 自动加载粉丝数据
-        async function loadFollowerStats() {
-            try {
-                // 添加时间戳避免缓存
-                const response = await fetch('./data/stats.json?' + new Date().getTime());
-                const data = await response.json();
-                
-                updateStatsDisplay(data);
-            } catch (error) {
-                console.error('加载数据失败:', error);
-                showBackupStats();
-            }
-        }
-
-        function updateStatsDisplay(data) {
-            document.getElementById('followerCount').textContent = formatNumber(data.followers);
-            document.getElementById('likesCount').textContent = formatNumber(data.likes);
-            document.getElementById('videoCount').textContent = data.videos;
-            document.getElementById('lastUpdate').textContent = data.lastUpdate;
-            
-            // 更新状态显示
-            const statusElement = document.getElementById('apiStatus');
-            if (data.status === 'official_api' || data.status === 'live_data') {
-                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 实时数据';
-                statusElement.className = 'api-status status-live';
-            } else if (data.status === 'web_json' || data.status === 'web_regex') {
-                statusElement.innerHTML = '<i class="fas fa-sync-alt"></i> 网页数据';
-                statusElement.className = 'api-status status-live';
-            } else if (data.status === 'fallback_data' || data.status === 'backup_data') {
-                statusElement.innerHTML = '<i class="fas fa-database"></i> 缓存数据';
-                statusElement.className = 'api-status status-cached';
-            } else if (data.status === 'manual_data' || data.status === 'manual_update' || data.status === 'manual_input') {
-                statusElement.innerHTML = '<i class="fas fa-user-edit"></i> 手动更新';
-                statusElement.className = 'api-status status-cached';
-            } else if (data.status === 'real_data') {
-                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> 真实数据';
-                statusElement.className = 'api-status status-live';
-            } else {
-                statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据异常';
-                statusElement.className = 'api-status status-error';
-            }
-        }
-
-        function showBackupStats() {
-            const backupData = {
-                followers: 0,
-                likes: 0,
-                videos: 0,
-                lastUpdate: new Date().toLocaleString('zh-CN')
-            };
-            updateStatsDisplay(backupData);
-            
-            document.getElementById('apiStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据加载失败';
-            document.getElementById('apiStatus').className = 'api-status status-error';
-        }
-
-        function formatNumber(num) {
-            if (num >= 100000000) {
-                return (num / 100000000).toFixed(1) + '亿';
-            } else if (num >= 10000) {
-                return (num / 10000).toFixed(1) + '万';
-            }
-            return num.toLocaleString();
-        }
-
-        // 页面加载时获取数据
-        document.addEventListener('DOMContentLoaded', loadFollowerStats);
-
-        // 每小时自动刷新一次数据
-        setInterval(loadFollowerStats, 60 * 60 * 1000);
-
-        // DeepSeek AI助手功能
-        document.addEventListener('DOMContentLoaded', function() {
-            // DeepSeek API配置 - 请替换成你的API密钥
-            const DEEPSEEK_API_KEY = '你的DeepSeek_API密钥'; // 请替换成你的API密钥
-            const API_URL = 'https://api.deepseek.com/v1/chat/completions';
-            
-            let conversationHistory = [
-                {
-                    role: "system",
-                    content: "你是一个专业的电脑科技助手，名叫'牢大说电脑AI助手'。你帮助用户解答电脑配置、硬件选购、软件使用、系统优化、游戏运行等问题。回答要专业、详细、实用，语气友好热情。如果用户询问关于'牢大说电脑'的内容，你可以介绍这是一个科技博主，分享电脑知识和资源。"
-                }
-            ];
-            
-            // 获取DOM元素
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const clearButton = document.getElementById('clear-chat');
-            const chatMessages = document.getElementById('chat-messages');
-            const apiStatus = document.getElementById('api-status-indicator');
-            const tokenCount = document.getElementById('token-count');
-            
-            // 发送消息函数
-            async function sendMessage() {
-                const message = chatInput.value.trim();
-                if (!message) return;
-                
-                // 添加用户消息到界面
-                addMessageToChat('user', message);
-                chatInput.value = '';
-                
-                // 添加到历史记录
-                conversationHistory.push({ role: "user", content: message });
-                
-                // 显示加载状态
-                showLoading(true);
-                apiStatus.textContent = '● 思考中...';
-                apiStatus.style.color = '#FF9800';
-                
-                try {
-                    // 调用DeepSeek API
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: "deepseek-chat",
-                            messages: conversationHistory,
-                            temperature: 0.7,
-                            max_tokens: 2000
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`API错误: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    const aiResponse = data.choices[0].message.content;
-                    
-                    // 添加到历史记录
-                    conversationHistory.push({ role: "assistant", content: aiResponse });
-                    
-                    // 显示AI回复
-                    addMessageToChat('ai', aiResponse);
-                    
-                    // 更新状态
-                    apiStatus.textContent = '● 已响应';
-                    apiStatus.style.color = '#4CAF50';
-                    tokenCount.textContent = `Tokens: ${data.usage.total_tokens || 'N/A'}`;
-                    
-                } catch (error) {
-                    console.error('API调用失败:', error);
-                    addMessageToChat('ai', `抱歉，出现了错误：${error.message}。请检查你的API密钥或网络连接。`);
-                    apiStatus.textContent = '● 连接错误';
-                    apiStatus.style.color = '#f44336';
-                } finally {
-                    showLoading(false);
-                }
-            }
-            
-            // 添加消息到聊天界面
-            function addMessageToChat(sender, message) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${sender}-message`;
-                messageDiv.style.cssText = sender === 'user' 
-                    ? 'background: var(--gradient); color: white; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; align-self: flex-end;'
-                    : 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
-                
-                messageDiv.innerHTML = `<strong>${sender === 'user' ? '你' : 'AI助手'}：</strong>${message}`;
-                chatMessages.appendChild(messageDiv);
-                
-                // 滚动到底部
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-            
-            // 显示/隐藏加载状态
-            function showLoading(show) {
-                const loadingIndicator = document.getElementById('loading-indicator');
-                if (show) {
-                    if (!loadingIndicator) {
-                        const loadingDiv = document.createElement('div');
-                        loadingDiv.id = 'loading-indicator';
-                        loadingDiv.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考</span>';
-                        loadingDiv.style.cssText = 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
-                        chatMessages.appendChild(loadingDiv);
-                        
-                        // 添加动态点
-                        const dots = loadingDiv.querySelector('.loading-dots');
-                        let dotCount = 0;
-                        const dotInterval = setInterval(() => {
-                            dotCount = (dotCount + 1) % 4;
-                            dots.textContent = '正在思考' + '.'.repeat(dotCount);
-                        }, 500);
-                        
-                        loadingDiv.dataset.interval = dotInterval;
-                    }
-                } else {
-                    if (loadingIndicator) {
-                        clearInterval(loadingIndicator.dataset.interval);
-                        loadingIndicator.remove();
-                    }
-                }
-            }
-            
-            // 清空聊天记录
-            function clearChat() {
-                conversationHistory = [
-                    {
-                        role: "system",
-                        content: "你是一个专业的电脑科技助手，名叫'牢大说电脑AI助手'。你帮助用户解答电脑配置、硬件选购、
