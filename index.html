@@ -627,59 +627,347 @@
             </div>
         </section>
         
-        <!-- DeepSeek AI助手部分 -->
-<section id="deepseek-chat" class="section">
-    <h2 class="section-title">AI助手问答</h2>
-    <div style="text-align: center; margin-bottom: 20px;">
-        <p>有问题想问？让DeepSeek AI助手帮你解答！可以咨询电脑配置、软件使用、科技问题等。</p>
-    </div>
+<!-- DeepSeek AI助手部分 -->
+<section id="deepseek-chat" class="section" style="
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    border-radius: 30px;
+    padding: 40px;
+    margin: 60px auto;
+    max-width: 900px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+">
+    <!-- 背景装饰元素 -->
+    <div style="
+        position: absolute;
+        top: -100px;
+        right: -100px;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(26, 42, 108, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 0;
+    "></div>
+    <div style="
+        position: absolute;
+        bottom: -80px;
+        left: -80px;
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(253, 187, 45, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 0;
+    "></div>
     
-    <div style="max-width: 800px; margin: 0 auto;">
+    <div style="position: relative; z-index: 1;">
+        <h2 class="section-title" style="
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        ">
+            <i class="fas fa-robot" style="margin-right: 15px; color: var(--accent);"></i>
+            AI智能助手
+        </h2>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p style="
+                color: #e0e0e0;
+                font-size: 1.1rem;
+                max-width: 600px;
+                margin: 0 auto 20px;
+                line-height: 1.6;
+            ">
+                让AI帮你解答电脑配置、软件使用、科技问题等专业咨询
+            </p>
+            <div style="
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 8px 20px;
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            ">
+                <i class="fas fa-bolt" style="color: var(--accent); margin-right: 8px;"></i>
+                <span style="color: #b0b0b0; font-size: 0.9rem;">基于DeepSeek最新AI模型</span>
+            </div>
+        </div>
+        
         <!-- 聊天容器 -->
-        <div id="chat-container" style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 500px; display: flex; flex-direction: column;">
+        <div id="chat-container" style="
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        ">
             <!-- 消息区域 -->
-            <div id="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 20px; padding: 10px; border: 1px solid #eee; border-radius: 5px;">
-                <div class="message ai-message" style="background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;">
-                    <strong>AI助手：</strong>你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
+            <div id="chat-messages" style="
+                flex: 1;
+                overflow-y: auto;
+                margin-bottom: 20px;
+                padding: 15px;
+                border-radius: 15px;
+                background: rgba(15, 15, 15, 0.6);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                scrollbar-width: thin;
+                scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
+            ">
+                <!-- 自定义滚动条样式 -->
+                <style>
+                    #chat-messages::-webkit-scrollbar {
+                        width: 6px;
+                    }
+                    #chat-messages::-webkit-scrollbar-track {
+                        background: rgba(255, 255, 255, 0.05);
+                        border-radius: 3px;
+                    }
+                    #chat-messages::-webkit-scrollbar-thumb {
+                        background: var(--accent);
+                        border-radius: 3px;
+                    }
+                </style>
+                
+                <div class="message ai-message" style="
+                    background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
+                    color: #f0f0f0;
+                    padding: 15px 20px;
+                    border-radius: 18px;
+                    margin-bottom: 15px;
+                    max-width: 85%;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(5px);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <div style="
+                            width: 32px;
+                            height: 32px;
+                            background: linear-gradient(135deg, var(--primary), var(--accent));
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 10px;
+                        ">
+                            <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
+                        </div>
+                        <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
+                    </div>
+                    <div style="line-height: 1.6;">
+                        你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
+                    </div>
                 </div>
             </div>
             
             <!-- 输入区域 -->
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="chat-input" placeholder="输入你的问题..." style="flex: 1; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 16px; outline: none; transition: border-color 0.3s;">
-                <button id="send-button" style="background: var(--gradient); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: transform 0.3s;">
-                    发送
+            <div style="
+                display: flex;
+                gap: 12px;
+                background: rgba(15, 15, 15, 0.6);
+                padding: 15px;
+                border-radius: 15px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+            ">
+                <input type="text" id="chat-input" placeholder="输入你的问题..." style="
+                    flex: 1;
+                    padding: 14px 20px;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 25px;
+                    font-size: 16px;
+                    outline: none;
+                    transition: all 0.3s;
+                    background: rgba(20, 20, 20, 0.8);
+                    color: #f0f0f0;
+                ">
+                <button id="send-button" style="
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    color: white;
+                    border: none;
+                    padding: 14px 30px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.3);
+                ">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>发送</span>
                 </button>
-                <button id="clear-chat" style="background: #f5f5f5; color: #666; border: none; padding: 12px 15px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
-                    清空
+                <button id="clear-chat" style="
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #b0b0b0;
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                ">
+                    <i class="fas fa-redo"></i>
+                    <span>清空</span>
                 </button>
             </div>
             
             <!-- API状态 -->
-            <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #777;">
-                <span id="api-status-indicator">● 准备就绪</span>
-                <span style="margin: 0 10px;">|</span>
-                <span id="token-count">Tokens: 0</span>
+            <div style="
+                text-align: center;
+                margin-top: 15px;
+                padding: 10px;
+                background: rgba(15, 15, 15, 0.6);
+                border-radius: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+            ">
+                <div style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+                    flex-wrap: wrap;
+                ">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div id="api-status-indicator" style="
+                            width: 10px;
+                            height: 10px;
+                            background: #4CAF50;
+                            border-radius: 50%;
+                            animation: pulse 2s infinite;
+                        "></div>
+                        <span style="color: #a0a0a0; font-size: 0.9rem;">在线</span>
+                    </div>
+                    <div style="height: 20px; width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-microchip" style="color: var(--accent);"></i>
+                        <span id="token-count" style="color: #a0a0a0; font-size: 0.9rem;">Tokens: 0</span>
+                    </div>
+                    <div style="height: 20px; width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-bolt" style="color: var(--accent);"></i>
+                        <span style="color: #a0a0a0; font-size: 0.9rem;">响应快速</span>
+                    </div>
+                </div>
             </div>
         </div>
         
         <!-- 使用说明 -->
-        <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; font-size: 14px; color: #666;">
-            <h4 style="margin-bottom: 10px; color: var(--primary);">使用说明：</h4>
-            <ul style="list-style: none; padding-left: 0;">
-                <li style="margin-bottom: 5px;">• 可以咨询电脑硬件配置、软件安装、系统优化等问题</li>
-                <li style="margin-bottom: 5px;">• 支持长对话，上下文会保留</li>
-                <li style="margin-bottom: 5px;">• 点击"清空"按钮可以开始新的对话</li>
-                <li>• 响应可能需要几秒钟时间，请耐心等待</li>
-            </ul>
+        <div style="
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #c0c0c0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        ">
+            <h4 style="
+                margin-bottom: 15px;
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 1.1rem;
+            ">
+                <i class="fas fa-info-circle"></i>
+                使用说明
+            </h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 15px;
+                    border-radius: 12px;
+                    border-left: 3px solid var(--primary);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <i class="fas fa-laptop" style="color: var(--accent); margin-right: 10px;"></i>
+                        <strong style="color: #f0f0f0;">专业咨询</strong>
+                    </div>
+                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
+                        电脑配置、软件安装、系统优化等问题
+                    </p>
+                </div>
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 15px;
+                    border-radius: 12px;
+                    border-left: 3px solid var(--secondary);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <i class="fas fa-comments" style="color: var(--accent); margin-right: 10px;"></i>
+                        <strong style="color: #f0f0f0;">长对话支持</strong>
+                    </div>
+                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
+                        支持上下文记忆，连续对话更流畅
+                    </p>
+                </div>
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 15px;
+                    border-radius: 12px;
+                    border-left: 3px solid var(--accent);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <i class="fas fa-history" style="color: var(--accent); margin-right: 10px;"></i>
+                        <strong style="color: #f0f0f0;">一键清空</strong>
+                    </div>
+                    <p style="margin: 0; line-height: 1.5; font-size: 0.9rem;">
+                        点击清空按钮可以开始新的对话
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
+<style>
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+#chat-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(253, 187, 45, 0.1);
+}
+
+#send-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 42, 108, 0.4);
+}
+
+#clear-chat:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #f0f0f0;
+}
+
+.message.user-message {
+    background: linear-gradient(135deg, rgba(178, 31, 31, 0.3) 0%, rgba(253, 187, 45, 0.1) 100%) !important;
+    color: white !important;
+}
+</style>
+
 <script>
 // DeepSeek AI助手功能
 document.addEventListener('DOMContentLoaded', function() {
-    // DeepSeek API配置 - 已使用你的API密钥
     const DEEPSEEK_API_KEY = 'sk-ac79218c268f4944815b82fd5da2429c';
     const API_URL = 'https://api.deepseek.com/v1/chat/completions';
     
@@ -690,7 +978,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
-    // 获取DOM元素
     const chatInput = document.getElementById('chat-input');
     const sendButton = document.getElementById('send-button');
     const clearButton = document.getElementById('clear-chat');
@@ -698,25 +985,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiStatus = document.getElementById('api-status-indicator');
     const tokenCount = document.getElementById('token-count');
     
-    // 发送消息函数
     async function sendMessage() {
         const message = chatInput.value.trim();
         if (!message) return;
         
-        // 添加用户消息到界面
+        // 添加用户消息
         addMessageToChat('user', message);
         chatInput.value = '';
         
-        // 添加到历史记录
         conversationHistory.push({ role: "user", content: message });
         
-        // 显示加载状态
-        showLoading(true);
-        apiStatus.textContent = '● 思考中...';
-        apiStatus.style.color = '#FF9800';
+        // 更新状态
+        apiStatus.style.background = '#FF9800';
+        apiStatus.previousElementSibling.textContent = '思考中';
         
         try {
-            // 调用DeepSeek API
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -738,72 +1021,99 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             const aiResponse = data.choices[0].message.content;
             
-            // 添加到历史记录
             conversationHistory.push({ role: "assistant", content: aiResponse });
-            
-            // 显示AI回复
             addMessageToChat('ai', aiResponse);
             
             // 更新状态
-            apiStatus.textContent = '● 已响应';
-            apiStatus.style.color = '#4CAF50';
+            apiStatus.style.background = '#4CAF50';
+            apiStatus.previousElementSibling.textContent = '在线';
             tokenCount.textContent = `Tokens: ${data.usage.total_tokens || 'N/A'}`;
             
         } catch (error) {
             console.error('API调用失败:', error);
-            addMessageToChat('ai', `抱歉，出现了错误：${error.message}。请检查你的API密钥或网络连接。`);
-            apiStatus.textContent = '● 连接错误';
-            apiStatus.style.color = '#f44336';
-        } finally {
-            showLoading(false);
+            addMessageToChat('ai', `抱歉，出现了错误：${error.message}。请检查网络连接。`);
+            apiStatus.style.background = '#f44336';
+            apiStatus.previousElementSibling.textContent = '连接错误';
         }
     }
     
-    // 添加消息到聊天界面
     function addMessageToChat(sender, message) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
-        messageDiv.style.cssText = sender === 'user' 
-            ? 'background: var(--gradient); color: white; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; align-self: flex-end;'
-            : 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
         
-        messageDiv.innerHTML = `<strong>${sender === 'user' ? '你' : 'AI助手'}：</strong>${message}`;
+        if (sender === 'user') {
+            messageDiv.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, rgba(178, 31, 31, 0.3) 0%, rgba(253, 187, 45, 0.1) 100%);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 18px;
+                    margin-bottom: 15px;
+                    max-width: 85%;
+                    align-self: flex-end;
+                    margin-left: auto;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(5px);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px; justify-content: flex-end;">
+                        <strong style="color: var(--accent); font-size: 1rem; margin-right: 10px;">你</strong>
+                        <div style="
+                            width: 32px;
+                            height: 32px;
+                            background: linear-gradient(135deg, var(--secondary), var(--accent));
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <i class="fas fa-user" style="color: white; font-size: 0.9rem;"></i>
+                        </div>
+                    </div>
+                    <div style="line-height: 1.6; text-align: right;">
+                        ${message}
+                    </div>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
+                    color: #f0f0f0;
+                    padding: 15px 20px;
+                    border-radius: 18px;
+                    margin-bottom: 15px;
+                    max-width: 85%;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(5px);
+                ">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <div style="
+                            width: 32px;
+                            height: 32px;
+                            background: linear-gradient(135deg, var(--primary), var(--accent));
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 10px;
+                        ">
+                            <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
+                        </div>
+                        <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
+                    </div>
+                    <div style="line-height: 1.6;">
+                        ${message}
+                    </div>
+                </div>
+            `;
+        }
+        
         chatMessages.appendChild(messageDiv);
-        
-        // 滚动到底部
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // 显示/隐藏加载状态
-    function showLoading(show) {
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (show) {
-            if (!loadingIndicator) {
-                const loadingDiv = document.createElement('div');
-                loadingDiv.id = 'loading-indicator';
-                loadingDiv.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考</span>';
-                loadingDiv.style.cssText = 'background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;';
-                chatMessages.appendChild(loadingDiv);
-                
-                // 添加动态点
-                const dots = loadingDiv.querySelector('.loading-dots');
-                let dotCount = 0;
-                const dotInterval = setInterval(() => {
-                    dotCount = (dotCount + 1) % 4;
-                    dots.textContent = '正在思考' + '.'.repeat(dotCount);
-                }, 500);
-                
-                loadingDiv.dataset.interval = dotInterval;
-            }
-        } else {
-            if (loadingIndicator) {
-                clearInterval(loadingIndicator.dataset.interval);
-                loadingIndicator.remove();
-            }
-        }
-    }
-    
-    // 清空聊天记录
     function clearChat() {
         conversationHistory = [
             {
@@ -812,19 +1122,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ];
         
-        // 清空聊天界面，只保留第一条欢迎消息
         chatMessages.innerHTML = `
-            <div class="message ai-message" style="background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 80%;">
-                <strong>AI助手：</strong>你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
+            <div style="
+                background: linear-gradient(135deg, rgba(26, 42, 108, 0.3) 0%, rgba(26, 42, 108, 0.1) 100%);
+                color: #f0f0f0;
+                padding: 15px 20px;
+                border-radius: 18px;
+                margin-bottom: 15px;
+                max-width: 85%;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(5px);
+            ">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <div style="
+                        width: 32px;
+                        height: 32px;
+                        background: linear-gradient(135deg, var(--primary), var(--accent));
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 10px;
+                    ">
+                        <i class="fas fa-robot" style="color: white; font-size: 0.9rem;"></i>
+                    </div>
+                    <strong style="color: var(--accent); font-size: 1rem;">AI助手</strong>
+                </div>
+                <div style="line-height: 1.6;">
+                    你好！我是DeepSeek AI助手，可以帮你解答电脑配置、软件使用、科技问题等。有什么可以帮你的吗？
+                </div>
             </div>
         `;
         
-        apiStatus.textContent = '● 已重置';
-        apiStatus.style.color = '#9C27B0';
+        apiStatus.style.background = '#9C27B0';
+        apiStatus.previousElementSibling.textContent = '已重置';
         tokenCount.textContent = 'Tokens: 0';
+        
+        setTimeout(() => {
+            apiStatus.style.background = '#4CAF50';
+            apiStatus.previousElementSibling.textContent = '在线';
+        }, 1000);
     }
     
-    // 事件监听器
     sendButton.addEventListener('click', sendMessage);
     clearButton.addEventListener('click', clearChat);
     
@@ -833,10 +1173,6 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
-    
-    // 初始化API状态
-    apiStatus.textContent = '● 已连接';
-    apiStatus.style.color = '#4CAF50';
 });
 </script>
         
